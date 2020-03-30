@@ -1,11 +1,13 @@
 package eg.bazinga.sfgpetclinic.services.map;
 
 import eg.bazinga.sfgpetclinic.models.Pet;
-import eg.bazinga.sfgpetclinic.services.GenericService;
+import eg.bazinga.sfgpetclinic.services.PetService;
+import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
-public class PetServiceMap extends AbstractMapService<Pet, Long> implements GenericService<Pet, Long> {
+@Service
+public class PetServiceMap extends AbstractMapService<Pet, Long> implements PetService<Pet, Long> {
     
     @Override
     public Pet findById(Long id) {

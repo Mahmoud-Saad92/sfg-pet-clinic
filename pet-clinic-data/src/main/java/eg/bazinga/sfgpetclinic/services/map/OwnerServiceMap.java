@@ -1,11 +1,13 @@
 package eg.bazinga.sfgpetclinic.services.map;
 
 import eg.bazinga.sfgpetclinic.models.Owner;
-import eg.bazinga.sfgpetclinic.services.GenericService;
+import eg.bazinga.sfgpetclinic.services.OwnerService;
+import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
-public class OwnerServiceMap extends AbstractMapService<Owner, Long> implements GenericService<Owner, Long> {
+@Service
+public class OwnerServiceMap extends AbstractMapService<Owner, Long> implements OwnerService<Owner, Long> {
 
     @Override
     public Owner findById(Long id) {
@@ -30,5 +32,10 @@ public class OwnerServiceMap extends AbstractMapService<Owner, Long> implements 
     @Override
     public void delete(Owner owner) {
         super.delete(owner);
+    }
+
+    @Override
+    public Owner findByLastName(String lastName) {
+        return null;
     }
 }

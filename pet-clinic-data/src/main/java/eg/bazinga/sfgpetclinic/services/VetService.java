@@ -1,7 +1,5 @@
 package eg.bazinga.sfgpetclinic.services;
 
-import eg.bazinga.sfgpetclinic.models.Vet;
-
-public interface VetService extends GenericService<Vet, Long> {
+public interface VetService<T, ID> extends GenericService<T, ID> {
     
 }
