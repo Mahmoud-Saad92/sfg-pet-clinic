@@ -1,13 +1,13 @@
 package eg.bazinga.sfgpetclinic.services.map;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import eg.bazinga.sfgpetclinic.exceptions.IExceptionMessage;
+import eg.bazinga.sfgpetclinic.models.BaseEntity;
 
-public abstract class AbstractMapService<T, ID> {
+import java.util.*;
 
-    protected Map<ID, T> map = new HashMap<>();
+public abstract class AbstractMapService<T extends BaseEntity, ID extends Long> {
+
+    protected Map<Long, T> map = new HashMap<>();
 
     Set<T> findAll(){
         return new HashSet<>(map.values());
@@ -17,8 +17,18 @@ public abstract class AbstractMapService<T, ID> {
         return map.get(id);
     }
 
-    T save(T t, ID id) {
-        return map.put(id, t);
+    T save(T t) {
+
+        if (t != null) {
+            if (t.getId() == null) {
+                t.setId(getNextID());
+            }
+            t = map.put(t.getId(), t);
+        } else {
+            throw new RuntimeException(IExceptionMessage.NULL_OBJECT_DETECTED);
+        }
+
+        return t;
     }
 
     void delete(T t) {
@@ -27,5 +37,9 @@ public abstract class AbstractMapService<T, ID> {
 
     void deleteById(ID id) {
         map.remove(id);
+    }
+
+    private Long getNextID() {
+        return  !(map.isEmpty()) ? Collections.max(map.keySet()) + 1 : 1L;
     }
 }
