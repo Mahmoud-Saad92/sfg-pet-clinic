@@ -1,6 +1,8 @@
 package eg.bazinga.sfgpetclinic.services;
 
-public interface OwnerService<T, ID> extends GenericService<T, ID> {
+import eg.bazinga.sfgpetclinic.models.Owner;
 
-    T findByLastName(String lastName);
+public interface OwnerService extends GenericService<Owner, Long> {
+
+    Owner findByLastName(String lastName);
 }
