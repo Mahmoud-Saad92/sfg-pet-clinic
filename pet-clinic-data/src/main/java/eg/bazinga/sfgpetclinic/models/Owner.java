@@ -1,5 +1,6 @@
 package eg.bazinga.sfgpetclinic.models;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class Owner extends Person {
@@ -35,6 +36,9 @@ public class Owner extends Person {
     }
 
     public Set<Pet> getPets() {
+        if (pets == null) {
+            pets = new HashSet<>();
+        }
         return pets;
     }
 
