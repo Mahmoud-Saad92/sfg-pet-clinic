@@ -1,8 +1,10 @@
 package eg.bazinga.sfgpetclinic.bootstrap;
 
 import eg.bazinga.sfgpetclinic.models.Owner;
+import eg.bazinga.sfgpetclinic.models.PetType;
 import eg.bazinga.sfgpetclinic.models.Vet;
 import eg.bazinga.sfgpetclinic.services.OwnerService;
+import eg.bazinga.sfgpetclinic.services.PetTypeService;
 import eg.bazinga.sfgpetclinic.services.VetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -13,15 +15,25 @@ public class DataLoader implements CommandLineRunner {
 
     private OwnerService ownerServiceMap;
     private VetService vetServiceMap;
+    private PetTypeService petTypeServiceMap;
 
     @Autowired
-    public DataLoader(OwnerService ownerServiceMap, VetService vetServiceMap) {
+    public DataLoader(OwnerService ownerServiceMap, VetService vetServiceMap, PetTypeService petTypeServiceMap) {
         this.ownerServiceMap = ownerServiceMap;
         this.vetServiceMap = vetServiceMap;
+        this.petTypeServiceMap = petTypeServiceMap;
     }
 
     @Override
     public void run(String... args) {
+
+        PetType dog = new PetType();
+        dog.setName("Rex");
+        dog = petTypeServiceMap.save(dog);
+
+        PetType cat = new PetType();
+        cat.setName("Dorry");
+        cat = petTypeServiceMap.save(cat);
 
         Owner ownerOne = new Owner();
         ownerOne.setFirstName("Mahmoud");
