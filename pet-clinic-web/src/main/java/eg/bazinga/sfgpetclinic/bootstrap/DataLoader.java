@@ -1,11 +1,9 @@
 package eg.bazinga.sfgpetclinic.bootstrap;
 
-import eg.bazinga.sfgpetclinic.models.Owner;
-import eg.bazinga.sfgpetclinic.models.Pet;
-import eg.bazinga.sfgpetclinic.models.PetType;
-import eg.bazinga.sfgpetclinic.models.Vet;
+import eg.bazinga.sfgpetclinic.models.*;
 import eg.bazinga.sfgpetclinic.services.OwnerService;
 import eg.bazinga.sfgpetclinic.services.PetTypeService;
+import eg.bazinga.sfgpetclinic.services.SpecialityService;
 import eg.bazinga.sfgpetclinic.services.VetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -19,17 +17,30 @@ public class DataLoader implements CommandLineRunner {
     private OwnerService ownerServiceMap;
     private VetService vetServiceMap;
     private PetTypeService petTypeServiceMap;
+    private SpecialityService specialityServiceMap;
 
     @Autowired
-    public DataLoader(OwnerService ownerServiceMap, VetService vetServiceMap, PetTypeService petTypeServiceMap) {
+    public DataLoader(OwnerService ownerServiceMap,
+                      VetService vetServiceMap,
+                      PetTypeService petTypeServiceMap,
+                      SpecialityService specialityServiceMap) {
+
         this.ownerServiceMap = ownerServiceMap;
         this.vetServiceMap = vetServiceMap;
         this.petTypeServiceMap = petTypeServiceMap;
+        this.specialityServiceMap = specialityServiceMap;
     }
 
     @Override
     public void run(String... args) {
 
+        if (petTypeServiceMap.findAll().isEmpty()) {
+            loadData();
+        }
+
+    }
+
+    private void loadData() {
         PetType dog = new PetType();
         dog.setName("Dog");
         dog = petTypeServiceMap.save(dog);
@@ -60,22 +71,21 @@ public class DataLoader implements CommandLineRunner {
 
         ownerServiceMap.save(ownerTwo);
 
-        System.out.println("Owners Loaded ...");
-
         Vet vetOne = new Vet();
         vetOne.setFirstName("Sam");
         vetOne.setLastName("Axe");
+        vetOne.getSpecialities().add(setSpecialties("Radiology"));
 
         vetServiceMap.save(vetOne);
 
         Vet vetTwo = new Vet();
         vetTwo.setFirstName("Sam");
         vetTwo.setLastName("Axe");
+        vetTwo.getSpecialities().add(setSpecialties("Surgery"));
 
         vetServiceMap.save(vetTwo);
 
-        System.out.println("Vets Loaded ...");
-
+        System.out.println("Data Loaded ...");
     }
 
     private void setPet(PetType type, Owner owner, String name) {
@@ -85,5 +95,11 @@ public class DataLoader implements CommandLineRunner {
         pet.setName(name);
         pet.setOwner(owner);
         owner.getPets().add(pet);
+    }
+
+    private Speciality setSpecialties(String description) {
+        Speciality speciality = new Speciality();
+        speciality.setDescription(description);
+        return specialityServiceMap.save(speciality);
     }
 }
