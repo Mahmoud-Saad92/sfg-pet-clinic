@@ -2,15 +2,27 @@ package eg.bazinga.sfgpetclinic.models;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "PETS")
 public class Pet extends BaseEntity {
 
+    @Column(name = "name")
     private String name;
-    private PetType petType;
-    private Owner owner;
+
+    @Column(name = "birth_day")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
+
+    @ManyToOne
+    @JoinColumn(name = "pet_type_id")
+    private PetType petType;
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private Owner owner;
 
     public String getName() {
         return name;
