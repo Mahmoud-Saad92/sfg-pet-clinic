@@ -5,11 +5,13 @@ import eg.bazinga.sfgpetclinic.models.Vet;
 import eg.bazinga.sfgpetclinic.services.SpecialityService;
 import eg.bazinga.sfgpetclinic.services.VetService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
 @Service
+@Profile({"default", "map"})
 public class VetServiceMap extends AbstractMapService<Vet, Long> implements VetService {
 
     private SpecialityService specialityServiceMap;
