@@ -1,10 +1,7 @@
 package eg.bazinga.sfgpetclinic.bootstrap;
 
 import eg.bazinga.sfgpetclinic.models.*;
-import eg.bazinga.sfgpetclinic.services.OwnerService;
-import eg.bazinga.sfgpetclinic.services.PetTypeService;
-import eg.bazinga.sfgpetclinic.services.SpecialityService;
-import eg.bazinga.sfgpetclinic.services.VetService;
+import eg.bazinga.sfgpetclinic.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -18,17 +15,20 @@ public class DataLoader implements CommandLineRunner {
     private VetService vetServiceMap;
     private PetTypeService petTypeServiceMap;
     private SpecialityService specialityServiceMap;
+    private VisitService visitServiceMap;
 
     @Autowired
     public DataLoader(OwnerService ownerServiceMap,
                       VetService vetServiceMap,
                       PetTypeService petTypeServiceMap,
-                      SpecialityService specialityServiceMap) {
+                      SpecialityService specialityServiceMap,
+                      VisitService visitServiceMap) {
 
         this.ownerServiceMap = ownerServiceMap;
         this.vetServiceMap = vetServiceMap;
         this.petTypeServiceMap = petTypeServiceMap;
         this.specialityServiceMap = specialityServiceMap;
+        this.visitServiceMap = visitServiceMap;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class DataLoader implements CommandLineRunner {
         ownerOne.setCity("Mansoura");
         ownerOne.setTelephone("010154633");
 
-        setPet(cat, ownerOne, "Possy");
+        Pet possy = setPet(cat, ownerOne, "Possy");
 
         ownerServiceMap.save(ownerOne);
 
@@ -67,9 +67,16 @@ public class DataLoader implements CommandLineRunner {
         ownerTwo.setCity("Damita");
         ownerTwo.setTelephone("0103457324");
 
-        setPet(dog, ownerTwo, "Rix");
+        Pet rix = setPet(dog, ownerTwo, "Rix");
 
         ownerServiceMap.save(ownerTwo);
+
+        Visit catVisit = new Visit();
+        catVisit.setDescription("cat visit WTF !!");
+        catVisit.setDate(LocalDate.now());
+        catVisit.setPet(possy);
+
+        visitServiceMap.save(catVisit);
 
         Vet vetOne = new Vet();
         vetOne.setFirstName("Sam");
@@ -88,13 +95,15 @@ public class DataLoader implements CommandLineRunner {
         System.out.println("Data Loaded ...");
     }
 
-    private void setPet(PetType type, Owner owner, String name) {
+    private Pet setPet(PetType type, Owner owner, String name) {
         Pet pet = new Pet();
         pet.setPetType(type);
         pet.setBirthday(LocalDate.now());
         pet.setName(name);
         pet.setOwner(owner);
         owner.getPets().add(pet);
+
+        return pet;
     }
 
     private Speciality setSpecialties(String description) {
