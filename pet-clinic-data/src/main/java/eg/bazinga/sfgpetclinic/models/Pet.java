@@ -1,5 +1,9 @@
 package eg.bazinga.sfgpetclinic.models;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -9,6 +13,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "PETS")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Pet extends BaseEntity {
 
     @Column(name = "name")
@@ -29,36 +36,14 @@ public class Pet extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pet")
     private Set<Visit> visits;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
+    @Builder
+    public Pet(Long id, String name, LocalDate birthday, PetType petType, Owner owner, Set<Visit> visits) {
+        super(id);
         this.name = name;
-    }
-
-    public PetType getPetType() {
-        return petType;
-    }
-
-    public void setPetType(PetType petType) {
-        this.petType = petType;
-    }
-
-    public Owner getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Owner owner) {
-        this.owner = owner;
-    }
-
-    public LocalDate getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
+        this.petType = petType;
+        this.owner = owner;
+        this.visits = visits;
     }
 
     public Set<Visit> getVisits() {
@@ -68,7 +53,4 @@ public class Pet extends BaseEntity {
         return visits;
     }
 
-    public void setVisits(Set<Visit> visits) {
-        this.visits = visits;
-    }
 }
