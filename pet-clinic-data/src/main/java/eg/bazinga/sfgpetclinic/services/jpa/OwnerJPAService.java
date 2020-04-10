@@ -2,6 +2,8 @@ package eg.bazinga.sfgpetclinic.services.jpa;
 
 import eg.bazinga.sfgpetclinic.models.Owner;
 import eg.bazinga.sfgpetclinic.repositories.OwnerRepository;
+import eg.bazinga.sfgpetclinic.repositories.PetRepository;
+import eg.bazinga.sfgpetclinic.repositories.PetTypeRepository;
 import eg.bazinga.sfgpetclinic.services.OwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -15,10 +17,17 @@ import java.util.Set;
 public class OwnerJPAService implements OwnerService {
 
     private OwnerRepository ownerRepository;
+    private PetRepository petRepository;
+    private PetTypeRepository petTypeRepository;
 
     @Autowired
-    public OwnerJPAService(OwnerRepository ownerRepository) {
+    public OwnerJPAService(OwnerRepository ownerRepository,
+                           PetRepository petRepository,
+                           PetTypeRepository petTypeRepository) {
+
         this.ownerRepository = ownerRepository;
+        this.petRepository = petRepository;
+        this.petTypeRepository = petTypeRepository;
     }
 
     @Override
